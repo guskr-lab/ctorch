@@ -15,25 +15,40 @@ CTorch
 
 #include <stdio.h>
 
-int main (void) {
-
-  /* 'const' to make the objects unchangeable and read only.  */
-
-  const float x1 = 2.0f;
-  const float x2 = 2.0f;
-  const float w0 = 0.75f;
-  const float w1 = 0;
-
-  const float term_1 = x1 + x2;
-  const float term_2  =  w0 + w1;
-  const float bias = 0.75f;
+int main (void)
+{
+    const float weight = 0.8f;
+    const float bias = -0.6f;
+    const float threshold = 0.6f;
   
-  const float output = term_1 + term_2 + bias;
+    /*
+     `sizeof inputs` is the number of bytes occupied by the entire array.
 
-  printf("term_1 = %.3f\n", term_1);
-  printf("term_2 = %.3f\n", term_2);
-  printf("bias = %.3f\n", bias);
-  printf("output = %.3f\n", output);
-  
-  return 0;
+     `sizeof inputs[0]` is the number of bytes occupied by one element.
+
+     `size_t` is the standard unsigned type used for object sizes and array
+
+     */
+
+    const float inputs[] = {-2.0f, -0.5f, 0.0f, 1.0f, 2.0f};
+    const size_t count = sizeof inputs / sizeof inputs[0];
+
+    /*
+        A `for` loop has three clauses: initialization; continuation condition; update 
+     */
+
+    for (size_t i = 0; i < count; ++i) {
+            const float y = weight * inputs[i] + bias;
+
+            /* `>=` produces an integer truth value: nonzero for true, zero for false. */
+
+            if (y >= threshold) {
+                printf("x=%5.2f -> y=%6.3f -> class 1\n", inputs[i], y); //true
+            } else {
+                printf("x=%5.2f -> y=%6.3f -> class 0\n", inputs[i], y); //false
+            }
+
+    }
+    
+    return 0;
 }
